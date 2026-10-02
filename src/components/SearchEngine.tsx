@@ -32,8 +32,7 @@ export const SearchEngine: React.FC = () => {
               <option value="apartment">{t.searchApartment}</option>
               <option value="building">{t.searchBuilding}</option>
               <option value="hotel">{t.searchHotel}</option>
-              <option value="land">{t.searchLand}</option>
-              <option value="project">{t.searchProject}</option>
+              <option value="project">Promotion Immobilière & Projets</option>
               <option value="commercial">{t.searchCommercial}</option>
               <option value="office">{t.searchOffice}</option>
             </select>

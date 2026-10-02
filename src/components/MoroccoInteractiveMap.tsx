@@ -33,7 +33,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Port Tanger Med, Cité Financière & Tamuda Bay',
     highlightAr: 'ميناء طنجة المتوسط، المنطقة الحرة والواجهة البحرية',
     highlightEn: 'Tanger Med Port, Free Trade Zone & Luxury Coastline',
-    keyAssetTypes: ['Foncier Côtier', 'Industriel & Logistique', 'Tourisme Balnéaire', 'Villas Cap Spartel'],
+    keyAssetTypes: ['Promotion Immobilière', 'Industriel & Logistique', 'Tourisme Balnéaire', 'Villas Cap Spartel'],
     strategicPoints: ['1er Port de Méditerranée', 'Connexion TGV Al Boraq', 'Exonérations fiscales d’export']
   },
   {
@@ -81,7 +81,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Mazagan Beach Resort & Pôle Industriel Jorf Lasfar',
     highlightAr: 'منتجع مازاغان السياحي ومركب الجرف الأصفر',
     highlightEn: 'Mazagan Beach Resort & Industrial Megahub',
-    keyAssetTypes: ['Foncier Résidentiel', 'Resorts Touristiques', 'Terrains Industriels'],
+    keyAssetTypes: ['Promotion Résidentielle', 'Resorts Touristiques', 'Parcs d\'Activités'],
     strategicPoints: ['1ère zone industrielle de fertilisants au monde', 'Liaison autoroutière directe']
   },
   {
@@ -113,7 +113,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'La Palmeraie, Hivernage & Resorts Hôteliers Internationaux',
     highlightAr: 'النخيل، الحي الشتوي والمنتجعات الفندقية العالمية',
     highlightEn: 'The Palmeraie, Luxury Villas & 5-Star Hospitality Resorts',
-    keyAssetTypes: ['Villas Privées d\'Architecte', 'Palais & Riads Médina', 'Resorts Hôteliers 5*', 'Foncier Touristique'],
+    keyAssetTypes: ['Villas Privées d\'Architecte', 'Palais & Riads Médina', 'Resorts Hôteliers 5*', 'Promotion & Co-Développement'],
     strategicPoints: ['Capitale touristique internationale', 'Rendements locatifs premium (10%+)', 'Aéroport Marrakech Menara']
   },
   {
@@ -145,7 +145,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Taghazout Bay Resort & 300 Jours d\'Ensoleillement Annuel',
     highlightAr: 'خليج تغازوت البيئي و300 يوم شمس في السنة',
     highlightEn: 'Taghazout Bay Eco-Resort & Year-Round Sunshine',
-    keyAssetTypes: ['Hôtels & Resorts Front de Mer', 'Résidences Touristiques', 'Terrains Hôteliers Titrés'],
+    keyAssetTypes: ['Hôtels & Resorts Front de Mer', 'Résidences Touristiques', 'Programmes Hôteliers'],
     strategicPoints: ['Station balnéaire n°1', 'Plan d\'accélération industrielle du Souss', 'Golfs internationaux']
   },
   {
@@ -161,7 +161,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Studios Cinéma Internationaux & Complexe Solaire Noor',
     highlightAr: 'استوديوهات السينما العالمية والمركب الشمسي نور',
     highlightEn: 'World Cinema Studios & Noor Solar Megaproject',
-    keyAssetTypes: ['Lodges Éco-Désert', 'Kasbahs Rénovées', 'Grands Espaces Fonciers'],
+    keyAssetTypes: ['Lodges Éco-Désert', 'Kasbahs Rénovées', 'Complexes Touristiques'],
     strategicPoints: ['Moyenne de tournage de blockbusters mondiaux', 'Hub d\'énergie renouvelable']
   },
   {
@@ -177,7 +177,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Pôle Énergies Vertes, Port de Pêche & Voie Express Tiznit-Dakhla',
     highlightAr: 'قطب الطاقات المتجددة، الميناء والطريق السريع تيزنيت - الداخلة',
     highlightEn: 'Green Hydrogen Hub, Port Logistics & Trans-Sahara Highway',
-    keyAssetTypes: ['Parcs Industriels & Logistiques', 'Foncier Urbain', 'Immobilier Tertiaire'],
+    keyAssetTypes: ['Parcs Industriels & Logistiques', 'Promotion Urbaine', 'Immobilier Tertiaire'],
     strategicPoints: ['Voie Express 1055 km achevée', 'Parcs éoliens majeurs', 'Consulats internationaux']
   },
   {
@@ -193,7 +193,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Lagune Mondiale de Kitesurf & Futur Port Dakhla Atlantique',
     highlightAr: 'الخليج العالمي لرياضة الشراع، والميناء الأطلسي المستقبلي للداخلة',
     highlightEn: 'World Kitesurfing Lagoon & Megaproject Dakhla Atlantic Port',
-    keyAssetTypes: ['Éco-Resorts de Luxe', 'Hôtellerie Sportive & Bien-Être', 'Foncier Logistique & Maritime'],
+    keyAssetTypes: ['Éco-Resorts de Luxe', 'Hôtellerie Sportive & Bien-Être', 'Hub Logistique & Maritime'],
     strategicPoints: ['Nouveau Port Atlantique (12 Mds MAD)', 'Pôle mondial d\'hydrogène vert', 'Consulats généraux']
   },
   {
@@ -209,7 +209,7 @@ export const MOROCCO_HUBS: CityHub[] = [
     highlight: 'Pointe Sud du Royaume, Cap Blanc & Pôle Écotouristique Atlantique',
     highlightAr: 'الطرف الجنوبي للمملكة، الرأس الأبيض والواجهة الأطلسية',
     highlightEn: 'Southernmost Tip of the Kingdom, Cap Blanc & Atlantic Gateway',
-    keyAssetTypes: ['Foncier Stratégique', 'Projets Touristiques Sahariens', 'Infrastructures Maritimes'],
+    keyAssetTypes: ['Projets de Développement', 'Programmes Touristiques Sahariens', 'Infrastructures Maritimes'],
     strategicPoints: ['Bordure maritime Atlantique stratégique', 'Porte d\'Afrique Subsaharienne']
   }
 ];

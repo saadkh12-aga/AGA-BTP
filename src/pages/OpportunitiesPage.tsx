@@ -16,8 +16,7 @@ export const OpportunitiesPage: React.FC = () => {
       if (searchFilter.subType === 'apartment' && opp.subType !== 'apartment') return false;
       if (searchFilter.subType === 'building' && opp.subType !== 'building') return false;
       if (searchFilter.subType === 'hotel' && opp.category !== 'hotel' && !opp.subType.includes('hotel') && opp.subType !== 'resort') return false;
-      if (searchFilter.subType === 'land' && opp.category !== 'land' && !opp.subType.includes('land')) return false;
-      if (searchFilter.subType === 'project' && opp.category !== 'project') return false;
+      if (searchFilter.subType === 'project' && opp.category !== 'project' && !opp.projectAnalysis) return false;
       if (searchFilter.subType === 'commercial' && opp.subType !== 'commercial') return false;
       if (searchFilter.subType === 'office' && opp.subType !== 'office') return false;
     }

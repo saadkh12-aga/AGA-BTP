@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { Opportunity, OpportunityCategory, PropertySubType } from '../types';
-import { X, Save, Image, ShieldCheck, Lock, Sparkles, AlertCircle, Check } from 'lucide-react';
+import { Opportunity, OpportunityCategory, PropertySubType, ProjectAnalysis } from '../types';
+import { X, Save, Image, ShieldCheck, Lock, Sparkles, AlertCircle, Check, Layers, Building2, TrendingUp, Calendar, HardHat } from 'lucide-react';
 
 interface AdminOpportunityEditorModalProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ const STOCK_IMAGES = [
   { label: 'Villa Palmeraie Marrakech', url: '/src/assets/images/villa_palmeraie_marrakech_1790689596187.jpg' },
   { label: 'Tour CFC & Affaires Casablanca', url: '/src/assets/images/casablanca_finance_city_tower_1790689611498.jpg' },
   { label: 'Resort Côtier & Hôtellerie Agadir/Taghazout', url: '/src/assets/images/resort_hotel_agadir_coast_1790689622395.jpg' },
-  { label: 'Foncier & Littoral Tanger/Nord', url: '/src/assets/images/prime_land_tangier_coast_1790689635157.jpg' },
+  { label: 'Programme & Littoral Tanger/Nord', url: '/src/assets/images/prime_land_tangier_coast_1790689635157.jpg' },
 ];
 
 export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalProps> = ({
@@ -42,6 +42,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
   const [surfaceM2, setSurfaceM2] = useState<number>(1500);
   const [builtSurfaceM2, setBuiltSurfaceM2] = useState<number | undefined>(650);
   const [rooms, setRooms] = useState<number | undefined>(6);
+  const [unitsCount, setUnitsCount] = useState<number | undefined>(undefined);
   const [legalStatus, setLegalStatus] = useState('Titre Foncier Définitif');
   const [status, setStatus] = useState<Opportunity['status']>('Disponible');
   const [isConfidential, setIsConfidential] = useState(false);
@@ -51,6 +52,26 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
   const [fullDescription, setFullDescription] = useState('');
   const [investmentPotential, setInvestmentPotential] = useState('');
   const [roiEstimated, setRoiEstimated] = useState('9.5% net');
+
+  // Real Estate Development & Project Analysis states
+  const [includeProjectAnalysis, setIncludeProjectAnalysis] = useState<boolean>(false);
+  const [developerName, setDeveloperName] = useState('Groupe Promoteur Partenaire AGA');
+  const [architect, setArchitect] = useState('Cabinet d\'Architecture Agréé');
+  const [projectStage, setProjectStage] = useState<ProjectAnalysis['projectStage']>('Chantier en Cours');
+  const [progressPercentage, setProgressPercentage] = useState<number>(65);
+  const [deliveryQuarter, setDeliveryQuarter] = useState('T4 2026');
+  const [totalDevelopmentBudgetMAD, setTotalDevelopmentBudgetMAD] = useState<number>(50000000);
+  const [projectedRevenueMAD, setProjectedRevenueMAD] = useState<number>(72000000);
+  const [projectedNetMarginPercent, setProjectedNetMarginPercent] = useState<number>(27.5);
+  const [targetIRR, setTargetIRR] = useState('23.4% TRI');
+  const [preSalesCommercializedPercent, setPreSalesCommercializedPercent] = useState<number>(55);
+  const [permitNumber, setPermitNumber] = useState('PC-2024-URB-MAROC');
+  const [bankGuarantor, setBankGuarantor] = useState('Attijariwafa Bank (GFA)');
+  const [notaryOffice, setNotaryOffice] = useState('Étude Notariale Notaire de la Place');
+  const [unitsTotal, setUnitsTotal] = useState<number>(24);
+  const [unitsSold, setUnitsSold] = useState<number>(13);
+  const [costPerM2ConstructionMAD, setCostPerM2ConstructionMAD] = useState<number>(7500);
+  const [salePriceAverageM2MAD, setSalePriceAverageM2MAD] = useState<number>(16500);
 
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
@@ -71,6 +92,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
       setSurfaceM2(opportunityToEdit.surfaceM2 || 0);
       setBuiltSurfaceM2(opportunityToEdit.builtSurfaceM2);
       setRooms(opportunityToEdit.rooms);
+      setUnitsCount(opportunityToEdit.unitsCount);
       setLegalStatus(opportunityToEdit.legalStatus || 'Titre Foncier');
       setStatus(opportunityToEdit.status || 'Disponible');
       setIsConfidential(opportunityToEdit.isConfidential || false);
@@ -80,6 +102,33 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
       setFullDescription(opportunityToEdit.fullDescription || '');
       setInvestmentPotential(opportunityToEdit.investmentPotential || '');
       setRoiEstimated(opportunityToEdit.roiEstimated || '');
+
+      // Load project analysis if present
+      if (opportunityToEdit.projectAnalysis || opportunityToEdit.category === 'project') {
+        setIncludeProjectAnalysis(true);
+        const pa = opportunityToEdit.projectAnalysis;
+        if (pa) {
+          setDeveloperName(pa.developerName || 'Groupe Promoteur Partenaire AGA');
+          setArchitect(pa.architect || 'Cabinet d\'Architecture Agréé');
+          setProjectStage(pa.projectStage || 'Chantier en Cours');
+          setProgressPercentage(pa.progressPercentage ?? 65);
+          setDeliveryQuarter(pa.deliveryQuarter || 'T4 2026');
+          setTotalDevelopmentBudgetMAD(pa.totalDevelopmentBudgetMAD || opportunityToEdit.priceMAD);
+          setProjectedRevenueMAD(pa.projectedRevenueMAD || Math.round(opportunityToEdit.priceMAD * 1.35));
+          setProjectedNetMarginPercent(pa.projectedNetMarginPercent || 27.5);
+          setTargetIRR(pa.targetIRR || '23.4% TRI');
+          setPreSalesCommercializedPercent(pa.preSalesCommercializedPercent || 50);
+          setPermitNumber(pa.permitNumber || 'PC-2024-URB-MAROC');
+          setBankGuarantor(pa.bankGuarantor || 'Banque Agréée (GFA)');
+          setNotaryOffice(pa.notaryOffice || 'Étude Notariale');
+          setUnitsTotal(pa.unitsTotal || opportunityToEdit.unitsCount || 20);
+          setUnitsSold(pa.unitsSold || Math.round((pa.unitsTotal || 20) * 0.5));
+          setCostPerM2ConstructionMAD(pa.costPerM2ConstructionMAD || 7500);
+          setSalePriceAverageM2MAD(pa.salePriceAverageM2MAD || 16500);
+        }
+      } else {
+        setIncludeProjectAnalysis(false);
+      }
     } else {
       // Default empty form
       setTitle('');
@@ -97,15 +146,17 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
       setSurfaceM2(1200);
       setBuiltSurfaceM2(550);
       setRooms(5);
+      setUnitsCount(undefined);
       setLegalStatus('Titre Foncier Définitif');
       setStatus('Disponible');
       setIsConfidential(false);
       setFeatured(true);
       setMainImage(STOCK_IMAGES[1].url);
-      setShortDescription('Propriété d’exception idéalement située avec finitions haut de gamme.');
+      setShortDescription('Propriété d’exception sélectionnée par le cabinet AGA Projects.');
       setFullDescription('Dossier technique, situation cadastrale et état des lieux certifiés disponibles pour tout acquéreur qualifié.');
-      setInvestmentPotential('Excellente valeur patrimoniale et forte rentabilité locative saisonnière.');
+      setInvestmentPotential('Excellente valeur patrimoniale et forte rentabilité locative.');
       setRoiEstimated('10.2% net');
+      setIncludeProjectAnalysis(false);
     }
   }, [opportunityToEdit, isOpen]);
 
@@ -117,6 +168,36 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
     if (!title.trim()) {
       setNotification({ type: 'error', message: 'Veuillez saisir un titre valide.' });
       return;
+    }
+
+    // Build project analysis if applicable
+    let finalProjectAnalysis: ProjectAnalysis | undefined = undefined;
+    if (includeProjectAnalysis || category === 'project') {
+      finalProjectAnalysis = {
+        developerName: developerName.trim() || 'Groupe Promoteur Partenaire AGA',
+        architect: architect.trim() || undefined,
+        projectStage,
+        progressPercentage: Number(progressPercentage),
+        deliveryQuarter: deliveryQuarter.trim() || 'T4 2026',
+        totalDevelopmentBudgetMAD: Number(totalDevelopmentBudgetMAD) || Number(priceMAD),
+        projectedRevenueMAD: Number(projectedRevenueMAD) || Math.round(Number(priceMAD) * 1.35),
+        projectedNetMarginPercent: Number(projectedNetMarginPercent),
+        targetIRR: targetIRR.trim() || '23.4% TRI',
+        preSalesCommercializedPercent: Number(preSalesCommercializedPercent),
+        permitNumber: permitNumber.trim() || undefined,
+        bankGuarantor: bankGuarantor.trim() || undefined,
+        notaryOffice: notaryOffice.trim() || undefined,
+        unitsTotal: Number(unitsTotal) || (unitsCount ? Number(unitsCount) : 20),
+        unitsSold: Number(unitsSold) || Math.round(Number(unitsTotal) * 0.5),
+        costPerM2ConstructionMAD: Number(costPerM2ConstructionMAD) || undefined,
+        salePriceAverageM2MAD: Number(salePriceAverageM2MAD) || undefined,
+        keyMilestones: opportunityToEdit?.projectAnalysis?.keyMilestones || [
+          { date: 'T1 2024', title: 'Permis de construire & terrassements', completed: true },
+          { date: 'T3 2024', title: 'Gros œuvre & élévation structurelle', completed: true },
+          { date: 'T2 2026', title: 'Second œuvre & corps d\'états techniques', completed: progressPercentage > 60 },
+          { date: deliveryQuarter, title: 'Réception provisoire & livraison VEFA', completed: progressPercentage >= 100 }
+        ]
+      };
     }
 
     const payload: Opportunity = {
@@ -137,6 +218,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
       surfaceM2: Number(surfaceM2) || 0,
       builtSurfaceM2: builtSurfaceM2 ? Number(builtSurfaceM2) : undefined,
       rooms: rooms ? Number(rooms) : undefined,
+      unitsCount: unitsTotal || unitsCount,
       legalStatus: legalStatus.trim() || 'Titre Foncier Définitif',
       status,
       isConfidential,
@@ -149,6 +231,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
       fullDescription: fullDescription.trim() || 'Dossier complet communicable sous accord de confidentialité.',
       investmentPotential: investmentPotential.trim() || 'Fort potentiel de valorisation patrimoniale.',
       roiEstimated: roiEstimated.trim() || undefined,
+      projectAnalysis: finalProjectAnalysis,
       confidentialTeaser: isConfidential ? {
         region,
         type: subTypeLabel || category,
@@ -189,7 +272,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
             </div>
             <div>
               <div className="text-xs uppercase tracking-widest text-[#c5a059] font-mono font-bold">
-                CONSOLE ADMINISTRATEUR AGA
+                CONSOLE ADMINISTRATEUR AGA PROJECTS
               </div>
               <h2 className="text-xl font-serif-luxury font-bold text-white">
                 {isEditing ? `Modifier la Publication : ${opportunityToEdit?.title}` : 'Créer une Nouvelle Publication'}
@@ -232,7 +315,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Ex: Villa Contemporaine Palmeraie - Marrakech"
+                placeholder="Ex: Résidence Belvédère Mer - 24 Villas Clé en Main"
                 className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-4 py-2.5 text-sm text-white outline-none"
               />
             </div>
@@ -246,7 +329,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   type="text"
                   value={titleEn}
                   onChange={(e) => setTitleEn(e.target.value)}
-                  placeholder="Ex: Contemporary Luxury Villa - Marrakech Palmeraie"
+                  placeholder="Ex: Belvédère Ocean Residences - 24 Luxury Villas"
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3.5 py-2 text-xs text-white outline-none"
                 />
               </div>
@@ -260,14 +343,14 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   dir="rtl"
                   value={titleAr}
                   onChange={(e) => setTitleAr(e.target.value)}
-                  placeholder="مثال: فيلا عصرية فاخرة - النخيل مراكش"
+                  placeholder="مثال: مشروع إقامة بلفيدير البحر - 24 فيلا فاخرة"
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3.5 py-2 text-xs text-white outline-none"
                 />
               </div>
             </div>
           </div>
 
-          {/* Section 2: Catégorie, Typologie & Localisation */}
+          {/* Section 2: Catégorie, Typologie & Localisation (SANS OPTION TERRAIN) */}
           <div className="space-y-4 bg-[#161821] p-5 rounded-xl border border-[#272a36]">
             <div className="text-xs font-bold text-[#c5a059] uppercase tracking-wider">
               2. Typologie & Implantation Géographique au Maroc
@@ -278,13 +361,18 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                 <label className="block text-xs text-neutral-300 font-medium mb-1">Catégorie d'Actif *</label>
                 <select
                   value={category}
-                  onChange={(e) => setCategory(e.target.value as OpportunityCategory)}
+                  onChange={(e) => {
+                    const cat = e.target.value as OpportunityCategory;
+                    setCategory(cat);
+                    if (cat === 'project') {
+                      setIncludeProjectAnalysis(true);
+                    }
+                  }}
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 >
                   <option value="property">Bien Immobilier de Prestige</option>
+                  <option value="project">Promotion Immobilière & Projets en Cours</option>
                   <option value="hotel">Hôtellerie, Riad & Tourisme</option>
-                  <option value="land">Terrain & Réserve Foncière</option>
-                  <option value="project">Projet de Développement & Co-Investissement</option>
                   <option value="confidential">Opportunité Off-Market Confidentielle</option>
                 </select>
               </div>
@@ -296,19 +384,20 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   onChange={(e) => setSubType(e.target.value as PropertySubType)}
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 >
-                  <option value="villa">Villa de Luxe / Palais</option>
+                  <option value="villa">Villa de Luxe / Domaine Privé</option>
+                  <option value="apartment">Appartement Grand Standing</option>
+                  <option value="building">Immeuble de Rapport / Rendement</option>
+                  <option value="mixed_use">Programme Mixte (Résidentiel & Commercial)</option>
+                  <option value="promotion_residential">Promotion Résidentielle Neuve</option>
+                  <option value="promotion_commercial">Promotion Commerciale & Tertiaire</option>
+                  <option value="promotion_tourist">Promotion Touristique & Résidence</option>
                   <option value="hotel_operating">Hôtel en Exploitation</option>
                   <option value="hotel_renovation">Hôtel à Rénover / Repositionner</option>
                   <option value="hotel_project">Projet Hôtelier Clé en Main</option>
                   <option value="resort">Resort Balnéaire</option>
-                  <option value="building">Immeuble de Rapport / Rendement</option>
                   <option value="office">Bureaux / Siège Tertiaire (CFC)</option>
-                  <option value="land_tourist">Terrain à Vocation Touristique</option>
-                  <option value="land_residential">Foncier Résidentiel & Lotissement</option>
-                  <option value="land_commercial">Terrain Commercial</option>
-                  <option value="land_industrial">Terrain Industriel / Logistique</option>
-                  <option value="land_agricultural">Domaine Agricole</option>
-                  <option value="mixed_use">Programme Mixte</option>
+                  <option value="commercial">Local Commercial Prime</option>
+                  <option value="warehouse">Hub Logistique / Entrepôt</option>
                 </select>
               </div>
 
@@ -318,7 +407,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   type="text"
                   value={subTypeLabel}
                   onChange={(e) => setSubTypeLabel(e.target.value)}
-                  placeholder="Ex: Villa d'Architecte"
+                  placeholder="Ex: Programme VEFA en Chantier"
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 />
               </div>
@@ -332,7 +421,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   required
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  placeholder="Marrakech, Casablanca, Tanger, Dakhla..."
+                  placeholder="Casablanca, Marrakech, Tanger, Rabat, Agadir..."
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 />
               </div>
@@ -365,7 +454,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   type="text"
                   value={zone}
                   onChange={(e) => setZone(e.target.value)}
-                  placeholder="Palmeraie, CFC, Souissi, Tamuda Bay..."
+                  placeholder="Palmeraie, CFC, Souissi, Cap Spartel, Taghazout..."
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 />
               </div>
@@ -375,12 +464,12 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
           {/* Section 3: Prix, Surfaces & Statuts */}
           <div className="space-y-4 bg-[#161821] p-5 rounded-xl border border-[#272a36]">
             <div className="text-xs font-bold text-[#c5a059] uppercase tracking-wider">
-              3. Conditions Financières, Surfaces & Statut Légal
+              3. Conditions Financières, Surfaces & Statut Commercial
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-neutral-300 font-medium mb-1">Prix en MAD *</label>
+                <label className="block text-xs text-neutral-300 font-medium mb-1">Prix Global en MAD *</label>
                 <input
                   type="number"
                   required
@@ -415,17 +504,17 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 >
                   <option value="Disponible">Disponible</option>
-                  <option value="Mandat Exclusif">Mandat Exclusif AGA</option>
+                  <option value="Mandat Exclusif">Mandat Exclusif AGA Projects</option>
                   <option value="Sous Offre">Sous Offre / En Négociation</option>
-                  <option value="Projet en Développement">Projet en Développement</option>
-                  <option value="Recherche Investisseur">Recherche d'Investisseurs</option>
+                  <option value="Projet en Développement">Chantier / Projet en Développement</option>
+                  <option value="Recherche Investisseur">Recherche de Co-Investisseurs</option>
                 </select>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs text-neutral-300 font-medium mb-1">Surface Totale (m²) *</label>
+                <label className="block text-xs text-neutral-300 font-medium mb-1">Surface Terrain / Emprise (m²) *</label>
                 <input
                   type="number"
                   required
@@ -436,7 +525,7 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-300 font-medium mb-1">Surface Bâtie (m²)</label>
+                <label className="block text-xs text-neutral-300 font-medium mb-1">Surface Bâtie Totale (m²)</label>
                 <input
                   type="number"
                   value={builtSurfaceM2 || ''}
@@ -447,12 +536,16 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-300 font-medium mb-1">Chambres / Suites / Unités</label>
+                <label className="block text-xs text-neutral-300 font-medium mb-1">Chambres / Lots / Unités</label>
                 <input
                   type="number"
-                  value={rooms || ''}
-                  onChange={(e) => setRooms(e.target.value ? Number(e.target.value) : undefined)}
-                  placeholder="Optionnel"
+                  value={rooms || unitsCount || ''}
+                  onChange={(e) => {
+                    const val = e.target.value ? Number(e.target.value) : undefined;
+                    setRooms(val);
+                    setUnitsCount(val);
+                  }}
+                  placeholder="Ex: 24 villas"
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white font-mono outline-none"
                 />
               </div>
@@ -463,18 +556,223 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
                   type="text"
                   value={legalStatus}
                   onChange={(e) => setLegalStatus(e.target.value)}
-                  placeholder="Titre Foncier, VNA..."
+                  placeholder="Titre Foncier, Permis..."
                   className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
                 />
               </div>
             </div>
           </div>
 
-          {/* Section 4: Visuel & Photothèque */}
+          {/* Section 4: NOUVEAU NIVEAU : PROMOTION IMMOBILIÈRE & ANALYSE DE PROJET EN COURS */}
+          <div className="space-y-4 bg-[#141822] p-5 rounded-xl border border-[#c5a059]/40 gold-glow">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-[#c5a059]" />
+                <span className="text-xs font-bold text-[#f5dfa5] uppercase tracking-wider">
+                  4. Niveau Promotion Immobilière & Indicateurs d'Avancement Chantier
+                </span>
+              </div>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeProjectAnalysis}
+                  onChange={(e) => setIncludeProjectAnalysis(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#c5a059] bg-[#1a1d24] border-[#383b48]"
+                />
+                <span className="text-xs font-semibold text-neutral-200">
+                  Activer l'Analyse Technique & Financière
+                </span>
+              </label>
+            </div>
+
+            {includeProjectAnalysis && (
+              <div className="space-y-4 pt-3 border-t border-[#262b3a]">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">
+                      Promoteur / Développeur *
+                    </label>
+                    <input
+                      type="text"
+                      value={developerName}
+                      onChange={(e) => setDeveloperName(e.target.value)}
+                      placeholder="Nom de la société de promotion"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">
+                      Cabinet d'Architecte
+                    </label>
+                    <input
+                      type="text"
+                      value={architect}
+                      onChange={(e) => setArchitect(e.target.value)}
+                      placeholder="Architecte en chef agréé"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">
+                      N° du Permis de Construire
+                    </label>
+                    <input
+                      type="text"
+                      value={permitNumber}
+                      onChange={(e) => setPermitNumber(e.target.value)}
+                      placeholder="Ex: PC-2024-TNG-0842"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white font-mono outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">
+                      Étape d'Avancement du Projet *
+                    </label>
+                    <select
+                      value={projectStage}
+                      onChange={(e) => setProjectStage(e.target.value as any)}
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                    >
+                      <option value="Étude de Faisabilité">Étude de Faisabilité</option>
+                      <option value="Permis Accordé">Permis Accordé</option>
+                      <option value="Chantier en Cours">Chantier en Cours</option>
+                      <option value="Gros Œuvre Achevé">Gros Œuvre Achevé</option>
+                      <option value="Second Œuvre & Finitions">Second Œuvre & Finitions</option>
+                      <option value="Livraison Imminente">Livraison Imminente (VEFA)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between text-xs text-neutral-300 font-medium mb-1">
+                      <span>Avancement Réel Chantier</span>
+                      <strong className="text-[#f5dfa5] font-mono">{progressPercentage}%</strong>
+                    </div>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      value={progressPercentage}
+                      onChange={(e) => setProgressPercentage(Number(e.target.value))}
+                      className="w-full accent-[#c5a059] cursor-pointer"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">
+                      Trimestre de Livraison VEFA
+                    </label>
+                    <input
+                      type="text"
+                      value={deliveryQuarter}
+                      onChange={(e) => setDeliveryQuarter(e.target.value)}
+                      placeholder="Ex: T4 2026 ou T2 2027"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Budget Total (MAD)</label>
+                    <input
+                      type="number"
+                      value={totalDevelopmentBudgetMAD}
+                      onChange={(e) => setTotalDevelopmentBudgetMAD(Number(e.target.value))}
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white font-mono outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Chiffre d'Affaires Prévi.</label>
+                    <input
+                      type="number"
+                      value={projectedRevenueMAD}
+                      onChange={(e) => setProjectedRevenueMAD(Number(e.target.value))}
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white font-mono outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Marge Nette (%)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={projectedNetMarginPercent}
+                      onChange={(e) => setProjectedNetMarginPercent(Number(e.target.value))}
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">TRI Cible Investisseur</label>
+                    <input
+                      type="text"
+                      value={targetIRR}
+                      onChange={(e) => setTargetIRR(e.target.value)}
+                      placeholder="Ex: 24.2% TRI"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-[#c5a059] font-mono outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Lots Totaux</label>
+                    <input
+                      type="number"
+                      value={unitsTotal}
+                      onChange={(e) => setUnitsTotal(Number(e.target.value))}
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white font-mono outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Lots Vendus (VEFA)</label>
+                    <input
+                      type="number"
+                      value={unitsSold}
+                      onChange={(e) => setUnitsSold(Number(e.target.value))}
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white font-mono outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Banque Garante (GFA)</label>
+                    <input
+                      type="text"
+                      value={bankGuarantor}
+                      onChange={(e) => setBankGuarantor(e.target.value)}
+                      placeholder="Ex: Attijariwafa Bank (GFA)"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-300 font-medium mb-1">Étude Notariale</label>
+                    <input
+                      type="text"
+                      value={notaryOffice}
+                      onChange={(e) => setNotaryOffice(e.target.value)}
+                      placeholder="Ex: Étude Notariale Casablanca"
+                      className="w-full bg-[#111317] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Section 5: Visuel & Photothèque */}
           <div className="space-y-4 bg-[#161821] p-5 rounded-xl border border-[#272a36]">
             <div className="text-xs font-bold text-[#c5a059] uppercase tracking-wider flex items-center gap-2">
               <Image className="w-3.5 h-3.5" />
-              <span>4. Photographie Principale & Visuels</span>
+              <span>5. Photographie Principale & Visuels</span>
             </div>
 
             <div>
@@ -516,10 +814,10 @@ export const AdminOpportunityEditorModal: React.FC<AdminOpportunityEditorModalPr
             </div>
           </div>
 
-          {/* Section 5: Descriptions & Rentabilité */}
+          {/* Section 6: Descriptions & Rentabilité */}
           <div className="space-y-4 bg-[#161821] p-5 rounded-xl border border-[#272a36]">
             <div className="text-xs font-bold text-[#c5a059] uppercase tracking-wider">
-              5. Argumentaire d'Investissement & Potentiel Financier
+              6. Argumentaire d'Investissement & Potentiel Financier
             </div>
 
             <div>

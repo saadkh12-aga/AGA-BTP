@@ -46,18 +46,13 @@ export const Footer: React.FC = () => {
                 </button>
               </li>
               <li>
+                <button onClick={() => setActiveTab('projects')} className="hover:text-[#f5dfa5] text-[#c5a059] font-semibold transition-colors">
+                  Promotion Immobilière & Chantiers
+                </button>
+              </li>
+              <li>
                 <button onClick={() => setActiveTab('hotels')} className="hover:text-white transition-colors">
                   Hôtellerie & Tourisme
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('projects')} className="hover:text-white transition-colors">
-                  Projets Immobiliers
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('land')} className="hover:text-white transition-colors">
-                  Catalogue Terrains
                 </button>
               </li>
               <li>
@@ -80,23 +75,18 @@ export const Footer: React.FC = () => {
                 </button>
               </li>
               <li>
-                <button onClick={() => setActiveTab('sell')} className="hover:text-white transition-colors">
-                  Confier un bien à la vente
-                </button>
-              </li>
-              <li>
                 <button onClick={() => setActiveTab('submit-project')} className="hover:text-white transition-colors">
-                  Recherche d'investisseurs
+                  Déposer un Projet / Co-Financement
                 </button>
               </li>
               <li>
                 <button onClick={() => setActiveTab('acquire')} className="hover:text-white transition-colors">
-                  Mandat de recherche
+                  Mandat de recherche sur-mesure
                 </button>
               </li>
               <li>
                 <button onClick={() => setActiveTab('about')} className="hover:text-white transition-colors">
-                  Notre Processus en 6 étapes
+                  Notre Processus & Déontologie
                 </button>
               </li>
             </ul>
@@ -155,10 +145,11 @@ export const Footer: React.FC = () => {
 
             <div className="pt-3">
               <button
-                onClick={() => setActiveTab('client-space')}
-                className="w-full py-2 px-3 bg-[#13151b] hover:bg-[#1a1d25] border border-[#272a34] rounded-lg text-neutral-200 text-xs font-semibold text-center transition-colors"
+                onClick={() => setActiveTab('admin')}
+                className="w-full py-2 px-3 bg-[#171922] hover:bg-[#20232e] border border-[#303340] rounded-lg text-[#f5dfa5] text-xs font-semibold text-center transition-colors flex items-center justify-center gap-1.5"
               >
-                Espace Investisseur Privilégié
+                <Shield className="w-3.5 h-3.5 text-[#c5a059]" />
+                <span>Console Administrateur</span>
               </button>
             </div>
           </div>
@@ -171,15 +162,15 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-6">
-            <button onClick={() => alert('Mentions Légales : AGA Projects & Investment, S.A. au capital de 10.000.000 MAD. Registre de Commerce Casablanca n° 542198. Activité réglementée d\'intermédiation en transactions et investissements immobiliers.')} className="hover:text-neutral-300 transition-colors">
+            <span className="hover:text-neutral-300 transition-colors cursor-pointer" title="AGA Projects, S.A. au capital de 10.000.000 MAD. RC Casablanca n° 542198. Activité réglementée d'intermédiation en transactions et investissements immobiliers.">
               {t.footerLegal}
-            </button>
-            <button onClick={() => alert('Politique de Confidentialité : Vos données patrimoniales et professionnelles sont protégées conformément à la loi 09-08 relative à la protection des personnes physiques à l\'égard du traitement des données à caractère personnel (CNDP Maroc).')} className="hover:text-neutral-300 transition-colors">
+            </span>
+            <span className="hover:text-neutral-300 transition-colors cursor-pointer" title="Protection des données personnelles conformément à la loi 09-08 (CNDP Maroc).">
               {t.footerPrivacy}
-            </button>
-            <button onClick={() => alert('Conditions d\'Utilisation : Les informations et valorisations publiées sur cette plateforme le sont à titre indicatif sous réserve de confirmation d\'audit foncier et notarié.')} className="hover:text-neutral-300 transition-colors">
+            </span>
+            <span className="hover:text-neutral-300 transition-colors cursor-pointer" title="Informations et valorisations indicatives sous réserve d'audit foncier et notarié.">
               {t.footerTerms}
-            </button>
+            </span>
           </div>
         </div>
       </div>

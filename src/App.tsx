@@ -16,20 +16,17 @@ import { HomePage } from './pages/HomePage';
 import { OpportunitiesPage } from './pages/OpportunitiesPage';
 import { InvestorsPage } from './pages/InvestorsPage';
 import { HotelsTourismPage } from './pages/HotelsTourismPage';
-import { RealEstateProjectsPage } from './pages/RealEstateProjectsPage';
-import { LandCatalogPage } from './pages/LandCatalogPage';
+import { PromotionImmobilierePage } from './pages/PromotionImmobilierePage';
 import { ConfidentialPage } from './pages/ConfidentialPage';
-import { SellPropertyPage } from './pages/SellPropertyPage';
 import { ProjectSeekerPage } from './pages/ProjectSeekerPage';
 import { AcquirePropertyPage } from './pages/AcquirePropertyPage';
 import { AboutPage } from './pages/AboutPage';
-import { ClientPortalPage } from './pages/ClientPortalPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { AdminOpportunityEditorModal } from './components/AdminOpportunityEditorModal';
 import { MessageSquare, Phone } from 'lucide-react';
 
 const MainContent: React.FC = () => {
-  const { activeTab, editingOpportunity, setEditingOpportunity } = useApp();
+  const { activeTab, editingOpportunity, isEditorModalOpen, closeEditorModal } = useApp();
 
   const renderActivePage = () => {
     switch (activeTab) {
@@ -37,27 +34,21 @@ const MainContent: React.FC = () => {
         return <HomePage />;
       case 'opportunities':
         return <OpportunitiesPage />;
-      case 'investors':
-        return <InvestorsPage />;
+      case 'projects':
+      case 'promotion':
+        return <PromotionImmobilierePage />;
       case 'hotels':
         return <HotelsTourismPage />;
-      case 'projects':
-        return <RealEstateProjectsPage />;
-      case 'land':
-        return <LandCatalogPage />;
+      case 'investors':
+        return <InvestorsPage />;
       case 'confidential':
         return <ConfidentialPage />;
-      case 'sell':
-        return <SellPropertyPage />;
       case 'submit-project':
         return <ProjectSeekerPage />;
       case 'acquire':
         return <AcquirePropertyPage />;
       case 'about':
         return <AboutPage />;
-      case 'client-space':
-      case 'investor-space':
-        return <ClientPortalPage />;
       case 'admin':
         return <AdminDashboardPage />;
       default:
@@ -83,8 +74,8 @@ const MainContent: React.FC = () => {
       <VisitRequestModal />
       <ConfidentialDossierModal />
       <AdminOpportunityEditorModal
-        isOpen={!!editingOpportunity}
-        onClose={() => setEditingOpportunity(null)}
+        isOpen={isEditorModalOpen}
+        onClose={closeEditorModal}
         opportunityToEdit={editingOpportunity}
       />
 

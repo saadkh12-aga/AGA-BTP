@@ -2,11 +2,37 @@ export type Language = 'fr' | 'en' | 'ar';
 export type Currency = 'MAD' | 'EUR' | 'USD';
 
 export type OpportunityCategory = 
-  | 'property'       // Biens immobiliers
-  | 'land'           // Terrains
-  | 'project'        // Projets immobiliers
-  | 'hotel'          // Projets hôteliers / Tourisme
+  | 'property'       // Biens de prestige & résidences
+  | 'project'        // Promotion immobilière & Projets en cours
+  | 'hotel'          // Hôtellerie, Resorts & Tourisme
   | 'confidential';  // Opportunités confidentielles
+
+export interface ProjectMilestone {
+  date: string;
+  title: string;
+  completed: boolean;
+}
+
+export interface ProjectAnalysis {
+  developerName: string;
+  architect?: string;
+  projectStage: 'Étude de Faisabilité' | 'Permis Accordé' | 'Chantier en Cours' | 'Gros Œuvre Achevé' | 'Second Œuvre & Finitions' | 'Livraison Imminente';
+  progressPercentage: number; // 0 - 100
+  deliveryQuarter: string; // e.g. "T3 2026", "T1 2027"
+  totalDevelopmentBudgetMAD: number;
+  projectedRevenueMAD: number;
+  projectedNetMarginPercent: number; // e.g. 28.5%
+  targetIRR: string; // e.g. "23.4% TRI"
+  preSalesCommercializedPercent: number; // e.g. 65%
+  permitNumber?: string;
+  bankGuarantor?: string;
+  notaryOffice?: string;
+  unitsTotal?: number;
+  unitsSold?: number;
+  costPerM2ConstructionMAD?: number;
+  salePriceAverageM2MAD?: number;
+  keyMilestones?: ProjectMilestone[];
+}
 
 export type PropertySubType =
   | 'villa'
@@ -20,12 +46,10 @@ export type PropertySubType =
   | 'hotel_project'
   | 'resort'
   | 'tourist_residence'
-  | 'land_residential'
-  | 'land_commercial'
-  | 'land_tourist'
-  | 'land_industrial'
-  | 'land_agricultural'
-  | 'mixed_use';
+  | 'mixed_use'
+  | 'promotion_residential'
+  | 'promotion_commercial'
+  | 'promotion_tourist';
 
 export interface Opportunity {
   id: string;
@@ -59,6 +83,7 @@ export interface Opportunity {
   investmentPotential: string;
   developmentNotes?: string;
   roiEstimated?: string;
+  projectAnalysis?: ProjectAnalysis;
   confidentialTeaser?: {
     region: string;
     type: string;
@@ -75,7 +100,7 @@ export interface Opportunity {
 }
 
 export interface SearchFilterState {
-  intention: 'all' | 'buy' | 'invest' | 'project' | 'hotel' | 'land';
+  intention: 'all' | 'buy' | 'invest' | 'project' | 'hotel';
   subType: string;
   city: string;
   region: string;

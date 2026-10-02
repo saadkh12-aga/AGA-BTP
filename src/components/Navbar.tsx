@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Language, Currency } from '../types';
-import { Menu, X, ChevronDown, Lock, User, Globe, DollarSign, ShieldCheck } from 'lucide-react';
+import { Menu, X, ChevronDown, Lock, User, Globe, DollarSign, ShieldCheck, Layers } from 'lucide-react';
 import { AgaEmblem } from './AgaLogo';
 
 export const Navbar: React.FC = () => {
@@ -24,10 +24,10 @@ export const Navbar: React.FC = () => {
           className="text-xl sm:text-2xl font-serif-luxury font-bold tracking-wider text-white hover:text-[#f4dfa5] transition-colors whitespace-nowrap shrink-0 flex items-center gap-3"
         >
           <AgaEmblem size={34} className="-my-1" />
-          <span>AGA Projects & Investment</span>
+          <span>AGA Projects</span>
         </button>
 
-        {/* Zone 2: 4-6 clean text navigation links with subtle hover effects */}
+        {/* Zone 2: Clean navigation links */}
         <nav className="hidden lg:flex items-center gap-6 text-xs uppercase tracking-wider font-semibold text-neutral-300">
           <button
             onClick={() => handleNavClick('home')}
@@ -43,11 +43,13 @@ export const Navbar: React.FC = () => {
             {t.navOpportunities}
           </button>
 
+          {/* NOUVEAU NIVEAU : PROMOTION IMMOBILIÈRE & PROJETS EN COURS */}
           <button
-            onClick={() => handleNavClick('investors')}
-            className={`transition-colors whitespace-nowrap hover:text-[#c5a059] ${activeTab === 'investors' ? 'text-[#c5a059]' : ''}`}
+            onClick={() => handleNavClick('projects')}
+            className={`transition-colors whitespace-nowrap hover:text-[#c5a059] flex items-center gap-1.5 ${activeTab === 'projects' ? 'text-[#c5a059] font-bold' : ''}`}
           >
-            {t.navInvestors}
+            <Layers className="w-3.5 h-3.5 text-[#c5a059]" />
+            <span>Promotion Immobilière</span>
           </button>
 
           <button
@@ -58,10 +60,10 @@ export const Navbar: React.FC = () => {
           </button>
 
           <button
-            onClick={() => handleNavClick('land')}
-            className={`transition-colors whitespace-nowrap hover:text-[#c5a059] ${activeTab === 'land' ? 'text-[#c5a059]' : ''}`}
+            onClick={() => handleNavClick('investors')}
+            className={`transition-colors whitespace-nowrap hover:text-[#c5a059] ${activeTab === 'investors' ? 'text-[#c5a059]' : ''}`}
           >
-            Terrains
+            {t.navInvestors}
           </button>
 
           {/* Plus Dropdown for other pages */}
@@ -70,18 +72,12 @@ export const Navbar: React.FC = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-1 transition-colors hover:text-[#c5a059] whitespace-nowrap"
             >
-              <span>Cabinet & Mandats</span>
+              <span>Cabinet & Services</span>
               <ChevronDown className="w-3.5 h-3.5" />
             </button>
 
             {dropdownOpen && (
               <div className="absolute top-full left-0 mt-2 w-56 bg-[#14161c] border border-[#2d3039] rounded-xl shadow-2xl py-2 z-50">
-                <button
-                  onClick={() => handleNavClick('projects')}
-                  className="w-full text-left px-4 py-2 text-xs text-neutral-300 hover:text-white hover:bg-[#1f222b] transition-colors"
-                >
-                  Projets Immobiliers
-                </button>
                 <button
                   onClick={() => handleNavClick('confidential')}
                   className="w-full text-left px-4 py-2 text-xs text-[#f5dfa5] hover:bg-[#1f222b] transition-colors flex items-center justify-between"
@@ -90,22 +86,16 @@ export const Navbar: React.FC = () => {
                   <Lock className="w-3 h-3 text-[#c5a059]" />
                 </button>
                 <button
-                  onClick={() => handleNavClick('sell')}
-                  className="w-full text-left px-4 py-2 text-xs text-neutral-300 hover:text-white hover:bg-[#1f222b] transition-colors"
-                >
-                  Vendre un Bien
-                </button>
-                <button
                   onClick={() => handleNavClick('submit-project')}
                   className="w-full text-left px-4 py-2 text-xs text-neutral-300 hover:text-white hover:bg-[#1f222b] transition-colors"
                 >
-                  Recherche d'Investisseurs
+                  Déposer un Projet / Co-Financement
                 </button>
                 <button
                   onClick={() => handleNavClick('acquire')}
                   className="w-full text-left px-4 py-2 text-xs text-neutral-300 hover:text-white hover:bg-[#1f222b] transition-colors"
                 >
-                  Acquérir un Bien
+                  Mandat d'Acquisition Sur-Mesure
                 </button>
                 <button
                   onClick={() => handleNavClick('about')}
@@ -118,7 +108,7 @@ export const Navbar: React.FC = () => {
           </div>
         </nav>
 
-        {/* Zone 3: 1-2 primary actions (Language & Currency, Investor Portal, Contact) */}
+        {/* Zone 3: Language & Currency, and ONLY ADMIN ACCESS (Client Portal eliminated) */}
         <div className="hidden lg:flex items-center gap-3">
           {/* Currency Picker */}
           <div className="flex items-center bg-[#15171d] rounded-lg border border-[#262830] p-0.5 text-xs font-mono">
@@ -150,23 +140,10 @@ export const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Client Portal Button */}
-          <button
-            onClick={() => handleNavClick('client-space')}
-            className={`px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'client-space' 
-                ? 'bg-[#252833] text-white border-[#c5a059]' 
-                : 'bg-[#15171d] text-neutral-300 border-[#2b2e38] hover:border-neutral-500'
-            }`}
-          >
-            <User className="w-3.5 h-3.5 text-[#c5a059]" />
-            <span>Portail</span>
-          </button>
-
-          {/* Admin Exclusive Access Link */}
+          {/* Admin Exclusive Access Link (Client Space Eliminated) */}
           <button
             onClick={() => handleNavClick('admin')}
-            className={`px-3 py-2 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1.5 whitespace-nowrap ${
+            className={`px-3.5 py-2 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'admin' 
                 ? 'bg-[#c5a059] text-black font-bold border-[#c5a059]' 
                 : (isAdmin 
@@ -177,12 +154,12 @@ export const Navbar: React.FC = () => {
             {isAdmin ? (
               <>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Admin Connecté</span>
+                <span>Console Admin Connectée</span>
               </>
             ) : (
               <>
                 <Lock className="w-3.5 h-3.5 text-[#c5a059]" />
-                <span>Espace Admin</span>
+                <span>Accès Administrateur</span>
               </>
             )}
           </button>
@@ -253,10 +230,11 @@ export const Navbar: React.FC = () => {
               {t.navOpportunities}
             </button>
             <button
-              onClick={() => handleNavClick('investors')}
-              className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold text-white hover:bg-[#1a1d24]"
+              onClick={() => handleNavClick('projects')}
+              className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold text-[#f5dfa5] hover:bg-[#1a1d24] flex items-center justify-between"
             >
-              {t.navInvestors}
+              <span>Promotion Immobilière</span>
+              <Layers className="w-4 h-4 text-[#c5a059]" />
             </button>
             <button
               onClick={() => handleNavClick('hotels')}
@@ -265,16 +243,10 @@ export const Navbar: React.FC = () => {
               {t.navHotels}
             </button>
             <button
-              onClick={() => handleNavClick('projects')}
+              onClick={() => handleNavClick('investors')}
               className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold text-white hover:bg-[#1a1d24]"
             >
-              {t.navProjects}
-            </button>
-            <button
-              onClick={() => handleNavClick('land')}
-              className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold text-white hover:bg-[#1a1d24]"
-            >
-              {t.navLand}
+              {t.navInvestors}
             </button>
             <button
               onClick={() => handleNavClick('confidential')}
@@ -284,16 +256,10 @@ export const Navbar: React.FC = () => {
               <Lock className="w-3.5 h-3.5 text-[#c5a059]" />
             </button>
             <button
-              onClick={() => handleNavClick('sell')}
-              className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold text-white hover:bg-[#1a1d24]"
-            >
-              {t.navSell}
-            </button>
-            <button
               onClick={() => handleNavClick('submit-project')}
               className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold text-white hover:bg-[#1a1d24]"
             >
-              {t.navSubmitProject}
+              Déposer un Projet
             </button>
             <button
               onClick={() => handleNavClick('acquire')}
@@ -309,18 +275,13 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
 
-          <div className="pt-3 border-t border-[#22252c] grid grid-cols-2 gap-2">
-            <button
-              onClick={() => handleNavClick('client-space')}
-              className="w-full py-2.5 bg-[#191c24] text-white text-xs font-semibold rounded-xl border border-[#2b2e3a]"
-            >
-              Espace Client
-            </button>
+          <div className="pt-3 border-t border-[#22252c]">
             <button
               onClick={() => handleNavClick('admin')}
-              className="w-full py-2.5 bg-[#c5a059] text-black text-xs font-bold rounded-xl"
+              className="w-full py-3 bg-[#c5a059] text-black text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-2"
             >
-              Administration
+              <Lock className="w-3.5 h-3.5" />
+              <span>{isAdmin ? 'Console Admin Connectée' : 'Accès Unique Administrateur'}</span>
             </button>
           </div>
         </div>

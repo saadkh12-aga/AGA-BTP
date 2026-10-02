@@ -63,6 +63,11 @@ interface AppContextType {
   deleteOpportunity: (id: string) => void;
   editingOpportunity: Opportunity | null;
   setEditingOpportunity: (opp: Opportunity | null) => void;
+  isEditorModalOpen: boolean;
+  setIsEditorModalOpen: (open: boolean) => void;
+  openEditorForCreate: () => void;
+  openEditorForEdit: (opp: Opportunity) => void;
+  closeEditorModal: () => void;
   resetOpportunitiesToDefault: () => void;
 
   // Helpers
@@ -477,7 +482,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return localStorage.getItem('aga_admin_email') || 'aga.projects@yahoo.com';
   });
 
-  const [editingOpportunity, setEditingOpportunity] = useState<Opportunity | null>(null);
+  const [editingOpportunity, setEditingOpportunityState] = useState<Opportunity | null>(null);
+  const [isEditorModalOpen, setIsEditorModalOpen] = useState<boolean>(false);
+
+  const openEditorForCreate = () => {
+    setEditingOpportunityState(null);
+    setIsEditorModalOpen(true);
+  };
+
+  const openEditorForEdit = (opp: Opportunity) => {
+    setEditingOpportunityState(opp);
+    setIsEditorModalOpen(true);
+  };
+
+  const closeEditorModal = () => {
+    setIsEditorModalOpen(false);
+    setEditingOpportunityState(null);
+  };
+
+  const setEditingOpportunity = (opp: Opportunity | null) => {
+    setEditingOpportunityState(opp);
+    if (opp !== null) {
+      setIsEditorModalOpen(true);
+    }
+  };
 
   const getAdminCredentials = () => {
     const saved = localStorage.getItem('aga_admin_credentials');
@@ -599,6 +627,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteOpportunity,
         editingOpportunity,
         setEditingOpportunity,
+        isEditorModalOpen,
+        setIsEditorModalOpen,
+        openEditorForCreate,
+        openEditorForEdit,
+        closeEditorModal,
         resetOpportunitiesToDefault,
         formatPrice,
         findMatchingOpportunities,

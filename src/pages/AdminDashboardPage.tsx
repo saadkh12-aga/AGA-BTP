@@ -120,10 +120,15 @@ export const AdminDashboardPage: React.FC = () => {
     }));
   };
 
-  // Handle Delete with Confirmation
+  // Handle Delete with Confirmation Modal
   const handleDelete = (opp: Opportunity) => {
-    if (confirm(`Confirmez-vous la suppression définitive de la publication :\n"${opp.title}" ?`)) {
-      deleteOpportunity(opp.id);
+    setOpportunityToDelete(opp);
+  };
+
+  const confirmDelete = () => {
+    if (opportunityToDelete) {
+      deleteOpportunity(opportunityToDelete.id);
+      setOpportunityToDelete(null);
     }
   };
 
@@ -143,10 +148,11 @@ export const AdminDashboardPage: React.FC = () => {
 
   // Total metrics
   const totalProperties = opportunities.filter(o => o.category === 'property').length;
-  const totalProjects = opportunities.filter(o => o.category === 'project').length;
+  const totalProjects = opportunities.filter(o => o.category === 'project' || !!o.projectAnalysis).length;
   const totalHotels = opportunities.filter(o => o.category === 'hotel' || o.subType.includes('hotel') || o.subType === 'resort').length;
-  const totalLands = opportunities.filter(o => o.category === 'land').length;
   const totalConfidential = opportunities.filter(o => o.isConfidential).length;
+
+  const [opportunityToDelete, setOpportunityToDelete] = useState<Opportunity | null>(null);
 
   const currentMatchingInvestor = investorProfiles.find(i => i.id === selectedMatchingInvestorId) || investorProfiles[0];
   const investorMatches = currentMatchingInvestor ? findMatchingOpportunities(currentMatchingInvestor) : [];
@@ -329,9 +335,9 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         <div className="p-4 bg-[#14161c] border border-[#272a33] rounded-xl">
-          <div className="text-[11px] text-neutral-400 font-mono">RÉSERVES FONCIÈRES</div>
-          <div className="text-2xl font-bold text-white font-mono mt-1">{totalLands}</div>
-          <div className="text-[10px] text-neutral-400 mt-0.5">Terrains titrés</div>
+          <div className="text-[11px] text-neutral-400 font-mono">PROMOTION IMMOBILIÈRE</div>
+          <div className="text-2xl font-bold text-[#f5dfa5] font-mono mt-1">{totalProjects}</div>
+          <div className="text-[10px] text-neutral-400 mt-0.5">Programmes en chantier</div>
         </div>
 
         <div className="p-4 bg-[#14161c] border border-[#272a33] rounded-xl">
@@ -441,11 +447,10 @@ export const AdminDashboardPage: React.FC = () => {
                 className="bg-[#181b22] border border-[#2b2e3a] focus:border-[#c5a059] rounded-xl px-3 py-2.5 text-xs text-neutral-300 outline-none"
               >
                 <option value="all">Toutes Catégories</option>
-                <option value="property">Biens Immobiliers</option>
+                <option value="property">Biens Immobiliers de Prestige</option>
+                <option value="project">Promotion Immobilière & Projets</option>
                 <option value="hotel">Hôtellerie & Tourisme</option>
-                <option value="land">Terrains & Foncier</option>
-                <option value="project">Projets</option>
-                <option value="confidential">Confidentiel / NDA</option>
+                <option value="confidential">Confidentiel / Sous NDA</option>
               </select>
 
               {/* Status Filter */}
@@ -870,7 +875,7 @@ export const AdminDashboardPage: React.FC = () => {
                         titleEn: `${s.propertyType} - ${s.city}`,
                         titleAr: `${s.propertyType} - ${s.city}`,
                         slug: `${s.propertyType}-${s.city}`.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-                        category: s.propertyType.toLowerCase().includes('terrain') ? 'land' : 'property',
+                        category: s.propertyType.toLowerCase().includes('projet') ? 'project' : 'property',
                         subType: 'villa',
                         subTypeLabel: s.propertyType,
                         city: s.city,
@@ -1119,6 +1124,47 @@ export const AdminDashboardPage: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {opportunityToDelete && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#12141a] border border-rose-900/50 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center gap-3 text-rose-400">
+              <div className="w-10 h-10 rounded-xl bg-rose-950/70 border border-rose-800 flex items-center justify-center shrink-0">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-serif-luxury font-bold text-white">Supprimer la Publication</h3>
+                <p className="text-xs text-rose-300">Action irréversible</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-neutral-300 leading-relaxed">
+              Êtes-vous certain de vouloir supprimer définitivement la publication :
+              <br />
+              <strong className="text-white mt-1 block">« {opportunityToDelete.title} »</strong>
+              <span className="text-[11px] text-neutral-400 font-mono mt-0.5 block">ID: #{opportunityToDelete.id} · {opportunityToDelete.city}</span>
+            </p>
+
+            <div className="pt-2 flex items-center justify-end gap-2 border-t border-[#232630]">
+              <button
+                type="button"
+                onClick={() => setOpportunityToDelete(null)}
+                className="px-4 py-2 bg-[#191b22] hover:bg-[#222530] text-neutral-300 rounded-lg text-xs font-semibold transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={confirmDelete}
+                className="px-5 py-2 bg-rose-700 hover:bg-rose-600 text-white font-bold text-xs rounded-lg transition-colors shadow-lg"
+              >
+                Confirmer la Suppression
+              </button>
+            </div>
           </div>
         </div>
       )}

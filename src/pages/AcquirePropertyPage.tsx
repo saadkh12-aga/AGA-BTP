@@ -17,14 +17,16 @@ export const AcquirePropertyPage: React.FC = () => {
   const [targetHorizon, setTargetHorizon] = useState('Moins de 3 mois');
   const [financingStatus, setFinancingStatus] = useState<any>('Fonds propres disponibles');
   const [description, setDescription] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName || !phone || !email || !city) {
-      alert('Veuillez renseigner vos coordonnées et vos critères essentiels.');
+      setErrorMessage('Veuillez renseigner vos coordonnées et vos critères essentiels.');
       return;
     }
+    setErrorMessage(null);
 
     addAcquisitionBrief({
       clientName,
@@ -82,6 +84,11 @@ export const AcquirePropertyPage: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {errorMessage && (
+              <div className="p-3.5 bg-rose-950/50 border border-rose-800 text-rose-300 rounded-xl text-xs">
+                {errorMessage}
+              </div>
+            )}
             {/* Identity */}
             <div className="border-b border-[#252830] pb-6 space-y-4">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#c5a059]">
@@ -138,7 +145,7 @@ export const AcquirePropertyPage: React.FC = () => {
                     className="w-full bg-[#181a21] border border-[#2c2f38] focus:border-[#c5a059] rounded-xl px-3.5 py-2.5 text-sm text-white outline-none cursor-pointer"
                   >
                     <option value="Villa de prestige">Villa de prestige</option>
-                    <option value="Terrain foncier">Terrain foncier / Lotissement</option>
+                    <option value="Promotion Immobilière & Programme Neuf">Promotion Immobilière & Programme Neuf</option>
                     <option value="Hôtel / Établissement touristique">Hôtel / Établissement touristique</option>
                     <option value="Appartement de standing">Appartement haut standing</option>
                     <option value="Immeuble entier">Immeuble entier</option>

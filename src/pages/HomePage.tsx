@@ -25,7 +25,7 @@ import {
 
 export const HomePage: React.FC = () => {
   const { opportunities, setActiveTab, setSelectedOpportunity, setSearchFilter, t, lang } = useApp();
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'property' | 'land' | 'project' | 'hotel'>('all');
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'property' | 'project' | 'hotel'>('all');
 
   const filteredOpportunities = opportunities.filter(opp => {
     if (activeCategoryFilter === 'all') return true;
@@ -74,10 +74,11 @@ export const HomePage: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setActiveTab('sell')}
-              className="py-3.5 px-4 bg-[#1a1c22]/90 hover:bg-[#252830] text-white font-bold text-xs uppercase tracking-wider rounded-xl border border-white/20 hover:border-[#c5a059] transition-all backdrop-blur-md"
+              onClick={() => setActiveTab('projects')}
+              className="py-3.5 px-4 bg-[#1a1c22]/90 hover:bg-[#252830] text-[#f5dfa5] font-bold text-xs uppercase tracking-wider rounded-xl border border-[#c5a059]/40 hover:border-[#c5a059] transition-all backdrop-blur-md flex items-center justify-center gap-1.5"
             >
-              {t.heroCtaSell}
+              <Layers className="w-3.5 h-3.5 text-[#c5a059]" />
+              <span>{t.heroCtaPromotion || 'PROMOTION IMMOBILIÈRE'}</span>
             </button>
 
             <button
@@ -157,27 +158,17 @@ export const HomePage: React.FC = () => {
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
-              Biens Immobiliers
-            </button>
-            <button
-              onClick={() => setActiveCategoryFilter('land')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
-                activeCategoryFilter === 'land'
-                  ? 'bg-[#c5a059] text-black'
-                  : 'text-neutral-400 hover:text-white'
-              }`}
-            >
-              Terrains
+              Biens de Prestige
             </button>
             <button
               onClick={() => setActiveCategoryFilter('project')}
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
                 activeCategoryFilter === 'project'
-                  ? 'bg-[#c5a059] text-black'
+                  ? 'bg-[#c5a059] text-black font-bold'
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
-              Projets Immobiliers
+              Promotion Immobilière
             </button>
             <button
               onClick={() => setActiveCategoryFilter('hotel')}
@@ -187,7 +178,7 @@ export const HomePage: React.FC = () => {
                   : 'text-neutral-400 hover:text-white'
               }`}
             >
-              Projets Hôteliers
+              Hôtels & Tourisme
             </button>
           </div>
         </div>
@@ -281,21 +272,21 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* 4. Foncier */}
+            {/* 4. Promotion Immobilière */}
             <div className="bg-[#181a22] border border-[#2a2d37] rounded-2xl p-6 hover:border-[#c5a059]/40 transition-colors">
               <div className="w-12 h-12 rounded-xl bg-[#232631] text-[#c5a059] flex items-center justify-center mb-4">
-                <Trees className="w-6 h-6" />
+                <Layers className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-serif-luxury font-semibold text-white mb-2">
-                Foncier Stratégique
+                Promotion Immobilière
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-                Grandes parcelles urbaines prêtes à bâtir, réserves foncières touristiques côtières et terrains industriels en zones franches.
+                Programmes neufs en VEFA, résidences contemporaines fermées, analyse d'avancement des chantiers et co-promotion.
               </p>
               <div className="text-xs text-neutral-400 space-y-1">
-                <div>· Terrains urbains à fort COS/CUS</div>
-                <div>· Foncier balnéaire & touristique</div>
-                <div>· Terrains d'aménagement mixtes</div>
+                <div>· Suivi d'exécution & jalons de chantier</div>
+                <div>· Garanties d'achèvement (loi 44-00 VEFA)</div>
+                <div>· Marge promoteur & TRI prévisionnel</div>
               </div>
             </div>
           </div>
@@ -419,10 +410,10 @@ export const HomePage: React.FC = () => {
                 Consulter les Teasers Off-Market
               </button>
               <button
-                onClick={() => setActiveTab('investor-space')}
+                onClick={() => setActiveTab('projects')}
                 className="px-6 py-3.5 bg-[#201d16] hover:bg-[#2b271d] text-white border border-[#c5a059]/50 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors"
               >
-                Mon Espace Investisseur
+                Programmes Neufs & Projets en Cours
               </button>
             </div>
           </div>
